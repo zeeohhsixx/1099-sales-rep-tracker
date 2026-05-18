@@ -1,0 +1,21 @@
+{
+  "name": "1099 Sales Rep Tracker",
+  "short_name": "1099 Tracker",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#030712",
+  "theme_color": "#f97316",
+  "description": "Track commissions, mileage, receipts, taxes, and daily work analytics.",
+  "icons": [
+    {
+      "src": "/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

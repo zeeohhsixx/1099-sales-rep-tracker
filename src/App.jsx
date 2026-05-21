@@ -22,11 +22,13 @@ import {
 
 } from "lucide-react";
 
-import "./styles.css";
+import "./Styles.css";
 
 const MILEAGE_RATE = 0.67;
 
 const STORAGE_KEY = "sales_rep_tracker_pwa_v1";
+
+const ACTIVE_WORK_KEY = "active_work_day_v1";
 
 const initialState = {
 
@@ -242,6 +244,32 @@ function App() {
 
     }
 
+    const savedWorkDay = localStorage.getItem(ACTIVE_WORK_KEY);
+
+    if (savedWorkDay) {
+
+      try {
+
+        const parsed = JSON.parse(savedWorkDay);
+
+        if (parsed.workActive && parsed.workStart) {
+
+          setWorkActive(true);
+
+          setWorkStart(parsed.workStart);
+
+          setRoutePoints(parsed.routePoints || []);
+
+        }
+
+      } catch {
+
+        localStorage.removeItem(ACTIVE_WORK_KEY);
+
+      }
+
+    }
+
   }, []);
 
   useEffect(() => {
@@ -249,6 +277,26 @@ function App() {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 
   }, [data]);
+
+  useEffect(() => {
+
+    localStorage.setItem(
+
+      ACTIVE_WORK_KEY,
+
+      JSON.stringify({
+
+        workActive,
+
+        workStart,
+
+        routePoints,
+
+      })
+
+    );
+
+  }, [workActive, workStart, routePoints]);
 
   const totals = useMemo(() => {
 
@@ -556,6 +604,8 @@ function App() {
 
     setRoutePoints([]);
 
+    localStorage.removeItem(ACTIVE_WORK_KEY);
+
     setTab("Daily Summary");
 
   }
@@ -714,9 +764,13 @@ function App() {
 
     setWorkActive(false);
 
+    setWorkStart(null);
+
     setRoutePoints([]);
 
     localStorage.removeItem(STORAGE_KEY);
+
+    localStorage.removeItem(ACTIVE_WORK_KEY);
 
   }
 
@@ -1304,9 +1358,9 @@ function App() {
 
           <p className="notice">
 
-            This starter version saves data locally on this device/browser. The next
+            This version saves your active work day, sales, receipts, mileage, and
 
-            production step is cloud login, database, and receipt storage.
+            summaries locally on this device/browser.
 
           </p>
 
